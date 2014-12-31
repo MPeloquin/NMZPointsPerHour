@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Windows.Forms;
 
 namespace NmzExpHour.OCR
 {
-    public class ScreenshotTaker
+    public interface IScreenshotTaker
     {
-        public void TakeScreenShot(String name)
+        Bitmap TakeScreenShot();
+    }
+
+    public class ScreenshotTaker : IScreenshotTaker
+    {
+        public Bitmap TakeScreenShot()
         {
             var bmpScreenshot = new Bitmap(SystemInformation.VirtualScreen.Width,
                                            SystemInformation.VirtualScreen.Height);
@@ -21,7 +24,7 @@ namespace NmzExpHour.OCR
                                         0,
                                         SystemInformation.VirtualScreen.Size);
 
-            bmpScreenshot.Save(name);
+            return bmpScreenshot;
         }
     }
 }

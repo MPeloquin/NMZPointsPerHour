@@ -9,7 +9,6 @@ namespace NmzExpHourTest.OCR
     [TestFixture]
     public class ScreenshotTakerTest
     {
-        private const string FileName = "temp.jpg";
         private ScreenshotTaker ssTaker;
 
         [SetUp]
@@ -19,30 +18,24 @@ namespace NmzExpHourTest.OCR
         }
 
         [Test]
-        public void AFileIsSavedOnTheDiskWithTheCorrectName()
+        public void ReturnsABitMapVariable()
         {
-            ssTaker.TakeScreenShot(FileName);
+            var img = ssTaker.TakeScreenShot();
 
-            Assert.That(File.Exists(FileName));
+            Assert.IsInstanceOf<Bitmap>(img);
+
+            img.Dispose();
         }
 
         [Test]
-        public void TheSizeOfTheSavedPictureIsTheSameAsTheScreens()
+        public void TheSizeOfTheBitmapIsTheSameAsTheScreens()
         {
-            ssTaker.TakeScreenShot(FileName);
-
-            Bitmap img = new Bitmap(FileName);
+            Bitmap img = ssTaker.TakeScreenShot();
 
             Assert.AreEqual(SystemInformation.VirtualScreen.Height, img.Height);
             Assert.AreEqual(SystemInformation.VirtualScreen.Width, img.Width);
 
             img.Dispose();
-        }
-
-        [TearDown]
-        public void RemoveTestFile()
-        {
-            //File.Delete(FileName);
         }
     }
 }
