@@ -24,16 +24,20 @@ namespace NmzExpHour.OCR.ImageProcessing
         {
             List<Point> listPoints = new List<Point>();
 
-            for (int i = 0; i < img.Width; i++)
+            LockBitmap lockBitmap = new LockBitmap(img);
+            lockBitmap.LockBits();
+
+            for (int y = 0; y < lockBitmap.Height; y++)
             {
-                for (int j = 0; j < img.Height; j++)
+                for (int x = 0; x < lockBitmap.Width; x++)
                 {
-                    if (img.GetPixel(i, j).Equals(color))
+                    if (lockBitmap.GetPixel(x, y) == color)
                     {
-                        listPoints.Add(new Point(i,j));
+                        listPoints.Add(new Point(x, y));
                     }
                 }
             }
+            lockBitmap.UnlockBits();
 
             return listPoints;
         }

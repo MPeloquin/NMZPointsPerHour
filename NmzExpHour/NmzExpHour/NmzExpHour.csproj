@@ -58,6 +58,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="OCR\ImageProcessing\LockBitmap.cs" />
     <Compile Include="OCR\ImageProcessing\ColorFinder.cs" />
     <Compile Include="OCR\ImageProcessing\NMZPointsPictureFinder.cs" />
     <Compile Include="OCR\NMZPointsScreenReader.cs" />
