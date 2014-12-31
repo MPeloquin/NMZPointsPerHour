@@ -4,7 +4,15 @@ using System.Linq;
 
 namespace NmzExpHour.OCR.ImageProcessing
 {
-    public class ColorFinder
+
+    public interface IColorFinder
+    {
+        Point FindFirstColor(Bitmap img, Color color);
+        Point FindLastColor(Bitmap img, Color color);
+        List<Point> FindPoints(Bitmap img, Color color);
+    }
+
+    public class ColorFinder : IColorFinder
     {
         public Point FindFirstColor(Bitmap img, Color color)
         {
