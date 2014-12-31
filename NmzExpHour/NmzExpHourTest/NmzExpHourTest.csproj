@@ -67,7 +67,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="OCR\ScreenReaderTest.cs" />
+    <Compile Include="Data\Images.cs" />
+    <Compile Include="OCR\ImageProcessing\NMZPointsPictureFinderTest.cs" />
+    <Compile Include="OCR\ImageProcessing\ColorFinderTest.cs" />
+    <Compile Include="OCR\NMZPointsScreenReaderTest.cs" />
     <Compile Include="OCR\ScreenshotTakerTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
