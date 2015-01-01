@@ -68,7 +68,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Data\Images.cs" />
-    <Compile Include="OCR\ImageProcessing\NMZPointsPictureFinderTest.cs" />
+    <Compile Include="OCR\ImageProcessing\NMZPointsImageFinderTest.cs" />
     <Compile Include="OCR\ImageProcessing\ColorFinderTest.cs" />
     <Compile Include="OCR\NMZPointsScreenReaderTest.cs" />
     <Compile Include="OCR\ScreenshotTakerTest.cs" />

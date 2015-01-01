@@ -2,19 +2,19 @@
 
 namespace NmzExpHour.OCR.ImageProcessing
 {
-    public interface INMZPointsPictureFinder
+    public interface INMZPointsImageFinder
     {
-        Bitmap FindPoints(Bitmap img);
+        Bitmap FindNMZPoints(Bitmap img);
     }
 
-    public class NMZInmzPointsPicturePictureFinder : INMZPointsPictureFinder
+    public class NMZPointsImageFinder : INMZPointsImageFinder
     {
-        public NMZInmzPointsPicturePictureFinder()
+        public NMZPointsImageFinder()
         {
             ColorFinder = new ColorFinder();
         }
 
-        public Bitmap FindPoints(Bitmap img)
+        public Bitmap FindNMZPoints(Bitmap img)
         {
             Point firstPoint = ColorFinder.FindFirstColor(img, Color.FromArgb(127, 70, 15));
             Point lastPoint = ColorFinder.FindLastColor(img, Color.FromArgb(127, 70, 15));

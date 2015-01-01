@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using NmzExpHour.OCR;
 using NmzExpHour.OCR.ImageProcessing;
-using NmzExpHourTest.Data;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -22,10 +21,10 @@ namespace NmzExpHourTest.OCR
         public void CallsScreenshotTaker()
         {
             var ssTaker = Substitute.For<IScreenshotTaker>();
-            var pointsFinder = Substitute.For<INMZPointsPictureFinder>();
+            var pointsFinder = Substitute.For<INMZPointsImageFinder>();
 
             nmzPointsScreenReader.ScreenShotTaker = ssTaker;
-            nmzPointsScreenReader.InmzPointsPictureFinder = pointsFinder;
+            nmzPointsScreenReader.InmzPointsImageFinder = pointsFinder;
 
             nmzPointsScreenReader.ScreenToNMZPoints();
 
@@ -36,17 +35,17 @@ namespace NmzExpHourTest.OCR
         public void CallsPointsFinderWithScreenShot()
         {
             var ssTaker = Substitute.For<IScreenshotTaker>();
-            var pointsFinder = Substitute.For<INMZPointsPictureFinder>();
+            var pointsFinder = Substitute.For<INMZPointsImageFinder>();
 
             Bitmap img = new Bitmap(10, 10);
             ssTaker.TakeScreenShot().Returns(img);
 
             nmzPointsScreenReader.ScreenShotTaker = ssTaker;
-            nmzPointsScreenReader.InmzPointsPictureFinder = pointsFinder;
+            nmzPointsScreenReader.InmzPointsImageFinder = pointsFinder;
 
             nmzPointsScreenReader.ScreenToNMZPoints();
 
-            pointsFinder.Received().FindPoints(img);
+            pointsFinder.Received().FindNMZPoints(img);
         }
 
         [Test]

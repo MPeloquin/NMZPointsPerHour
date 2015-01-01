@@ -7,12 +7,12 @@ using NUnit.Framework;
 namespace NmzExpHourTest.OCR.ImageProcessing
 {
     [TestFixture]
-    public class NMZPointsPictureFinderTest
+    public class NMZPointsImageFinderTest
     {
         [SetUp]
         public void SetUp()
         {
-            NMZInmzPointsPicturePictureFinder = new NMZInmzPointsPicturePictureFinder();
+            NMZPointsImageFinder = new NMZPointsImageFinder();
         }
 
 
@@ -22,7 +22,7 @@ namespace NmzExpHourTest.OCR.ImageProcessing
             var entryImage = new Bitmap(Images.TestPointsPresent0);
             var expected = new Bitmap(Images.TestPointsPresent0Result);
 
-            var actual = NMZInmzPointsPicturePictureFinder.FindPoints(entryImage);
+            var actual = NMZPointsImageFinder.FindNMZPoints(entryImage);
 
             Assert.AreEqual(expected.Height, actual.Height);
             Assert.AreEqual(expected.Width, actual.Width);
@@ -34,9 +34,9 @@ namespace NmzExpHourTest.OCR.ImageProcessing
                     Assert.AreEqual(expected.GetPixel(i,j), actual.GetPixel(i, j));
                 }
             }
-
-
         }
+
+
 
         [Test]
         public void FindsLocationOfPointsWithCallToColorFinder()
@@ -48,9 +48,9 @@ namespace NmzExpHourTest.OCR.ImageProcessing
             colorFinder.FindLastColor(img, Color.FromArgb(127, 70, 15)).Returns(new Point(1, 1));
 
 
-            NMZInmzPointsPicturePictureFinder.ColorFinder = colorFinder;
+            NMZPointsImageFinder.ColorFinder = colorFinder;
 
-            NMZInmzPointsPicturePictureFinder.FindPoints(img);
+            NMZPointsImageFinder.FindNMZPoints(img);
 
             colorFinder.Received().FindFirstColor(img, Color.FromArgb(127, 70, 15));
             colorFinder.Received().FindLastColor(img, Color.FromArgb(127, 70, 15));
@@ -58,7 +58,7 @@ namespace NmzExpHourTest.OCR.ImageProcessing
         }
 
 
-        public NMZInmzPointsPicturePictureFinder NMZInmzPointsPicturePictureFinder { get; set; }
+        public NMZPointsImageFinder NMZPointsImageFinder { get; set; }
 
     }
 }

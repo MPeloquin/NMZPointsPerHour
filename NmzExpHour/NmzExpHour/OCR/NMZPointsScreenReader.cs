@@ -8,19 +8,19 @@ namespace NmzExpHour.OCR
         public NMZPointsScreenReader()
         {
             ScreenShotTaker = new ScreenshotTaker();
-            InmzPointsPictureFinder = new NMZInmzPointsPicturePictureFinder();
+            InmzPointsImageFinder = new NMZPointsImageFinder();
         }
 
         public string ScreenToNMZPoints()
         {
             var screenshot = ScreenShotTaker.TakeScreenShot();
-            InmzPointsPictureFinder.FindPoints(screenshot);
+            InmzPointsImageFinder.FindNMZPoints(screenshot);
 
             return "";
         }
 
 
         public IScreenshotTaker ScreenShotTaker { get; set; }
-        public INMZPointsPictureFinder InmzPointsPictureFinder { get; set; }
+        public INMZPointsImageFinder InmzPointsImageFinder { get; set; }
     }
 }
