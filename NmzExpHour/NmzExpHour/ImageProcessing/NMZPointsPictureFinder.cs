@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace NmzExpHour.OCR.ImageProcessing
+namespace NmzExpHour.ImageProcessing
 {
     public interface INMZPointsImageFinder
     {

@@ -58,11 +58,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="OCR\ImageProcessing\LockBitmap.cs" />
-    <Compile Include="OCR\ImageProcessing\ColorFinder.cs" />
-    <Compile Include="OCR\ImageProcessing\NMZPointsPictureFinder.cs" />
+    <Compile Include="ImageProcessing\ColorFinder.cs" />
+    <Compile Include="ImageProcessing\LockBitmap.cs" />
+    <Compile Include="ImageProcessing\NMZPointsPictureFinder.cs" />
+    <Compile Include="ImageProcessing\ScreenshotTaker.cs" />
     <Compile Include="OCR\NMZPointsScreenReader.cs" />
-    <Compile Include="OCR\ScreenshotTaker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

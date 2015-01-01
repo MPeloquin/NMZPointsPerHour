@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
-using NmzExpHour.OCR.ImageProcessing;
+using NmzExpHour.ImageProcessing;
 using NmzExpHourTest.Data;
 using NUnit.Framework;
 
-namespace NmzExpHourTest.OCR.ImageProcessing
+namespace NmzExpHourTest.ImageProcessing
 {
     [TestFixture]
     public class ColorFinderTest

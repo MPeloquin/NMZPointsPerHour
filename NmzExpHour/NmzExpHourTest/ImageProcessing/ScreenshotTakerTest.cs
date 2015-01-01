@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
+using NmzExpHour.ImageProcessing;
 using NmzExpHour.OCR;
 using NUnit.Framework;
 
-namespace NmzExpHourTest.OCR
+namespace NmzExpHourTest.ImageProcessing
 {
     [TestFixture]
     public class ScreenshotTakerTest

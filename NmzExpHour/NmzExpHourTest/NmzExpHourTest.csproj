@@ -68,10 +68,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Data\Images.cs" />
-    <Compile Include="OCR\ImageProcessing\NMZPointsImageFinderTest.cs" />
-    <Compile Include="OCR\ImageProcessing\ColorFinderTest.cs" />
+    <Compile Include="ImageProcessing\ColorFinderTest.cs" />
+    <Compile Include="ImageProcessing\NMZPointsImageFinderTest.cs" />
+    <Compile Include="ImageProcessing\ScreenshotTakerTest.cs" />
     <Compile Include="OCR\NMZPointsScreenReaderTest.cs" />
-    <Compile Include="OCR\ScreenshotTakerTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

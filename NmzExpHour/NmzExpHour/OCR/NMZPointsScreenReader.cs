@@ -1,4 +1,4 @@
-﻿using NmzExpHour.OCR.ImageProcessing;
+﻿using NmzExpHour.ImageProcessing;
 
 namespace NmzExpHour.OCR
 {

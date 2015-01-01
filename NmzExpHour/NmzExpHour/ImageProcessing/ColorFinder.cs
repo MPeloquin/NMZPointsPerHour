@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace NmzExpHour.OCR.ImageProcessing
+namespace NmzExpHour.ImageProcessing
 {
 
     public interface IColorFinder

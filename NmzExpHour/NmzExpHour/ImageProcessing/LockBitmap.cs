@@ -3,9 +3,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-
 // source http://www.codeproject.com/Tips/240428/Work-with-bitmap-faster-with-Csharp
-namespace NmzExpHour.OCR.ImageProcessing
+namespace NmzExpHour.ImageProcessing
 {
     public class LockBitmap
     {
