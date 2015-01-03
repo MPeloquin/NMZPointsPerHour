@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace NmzExpHour.ImageProcessing
 {
@@ -32,15 +36,30 @@ namespace NmzExpHour.ImageProcessing
         {
             List<Point> listPoints = new List<Point>();
 
-            for (int y = 0; y < img.Height; y++)
+            unsafe
             {
-                for (int x = 0; x < img.Width; x++)
+                BitmapData bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadWrite, img.PixelFormat);
+                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(img.PixelFormat) / 8;
+                int heightInPixels = bitmapData.Height;
+                int widthInBytes = bitmapData.Width * bytesPerPixel;
+                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+
+                for (int y = 0; y < heightInPixels; y++)
                 {
-                    if (img.GetPixel(x, y) == color)
+                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                    for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                     {
-                        listPoints.Add(new Point(x, y));
+                        int blue = currentLine[x];
+                        int green = currentLine[x + 1];
+                        int red = currentLine[x + 2];
+
+                        if (Color.FromArgb(red, green, blue) == color)
+                        {
+                            listPoints.Add(new Point(x / 4, y));
+                        }
                     }
                 }
+                img.UnlockBits(bitmapData);
             }
 
             return listPoints;
