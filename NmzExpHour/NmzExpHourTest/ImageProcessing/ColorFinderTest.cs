@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using NmzExpHour.ImageProcessing;
 using NmzExpHourTest.Data;
 using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace NmzExpHourTest.ImageProcessing
 
             Point actual = ColorFinder.FindFirstColor(img, Color.Red);
 
-            Assert.AreEqual(new Point(-1, -1), actual);
+            Assert.That(actual.IsEmpty);
         }
 
         [Test]
@@ -31,17 +32,18 @@ namespace NmzExpHourTest.ImageProcessing
 
             Point actual = ColorFinder.FindLastColor(img, Color.Red);
 
-            Assert.AreEqual(new Point(-1, -1), actual);
+            Assert.That(actual.IsEmpty);
         }
+
+
 
         [Test]
         public void ReturnsTheLastPixelLocationOfTheColor()
         {
             Point expected = new Point(2558, 332);
-            Bitmap img = new Bitmap(Images.TestPointsPresent0);
-            Color color = Color.FromArgb(127, 70, 15);
-
-            Point actual = ColorFinder.FindLastColor(img, color);
+            Bitmap img = new Bitmap(Images.PointsFullImage);
+ 
+            Point actual = ColorFinder.FindLastColor(img, Colors.Border);
 
             Assert.AreEqual(expected, actual);
         }
@@ -51,12 +53,21 @@ namespace NmzExpHourTest.ImageProcessing
         public void ReturnsTheFirstPixelLocationOfTheColor()
         {
             Point expected = new Point(2516, 303);
-            Bitmap img = new Bitmap(Images.TestPointsPresent0);
-            Color color = Color.FromArgb(127, 70, 15);
-           
-            Point actual = ColorFinder.FindFirstColor(img, color);
+            Bitmap img = new Bitmap(Images.PointsFullImage);
+
+            Point actual = ColorFinder.FindFirstColor(img, Colors.Border);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ReturnsTheListOfColorsPresentInAnImage()
+        {
+            Bitmap img = new Bitmap(Images.PointsSmallImage);
+            List<Color> expected = new List<Color>();
+            expected.Add(Color.Black);
+            expected.Add(Colors.Border);
+            
         }
 
         public ColorFinder ColorFinder { get; set; }

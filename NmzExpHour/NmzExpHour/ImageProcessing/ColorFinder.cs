@@ -18,14 +18,14 @@ namespace NmzExpHour.ImageProcessing
         {
             List<Point> listPoints = FindPoints(img, color);
 
-            return listPoints.Count != 0 ? listPoints.First() : new Point(-1, -1);
+            return listPoints.Count != 0 ? listPoints.First() : new Point();
         }
 
         public Point FindLastColor(Bitmap img, Color color)
         {
             List<Point> listPoints = FindPoints(img, color);
 
-            return listPoints.Count != 0 ? listPoints.Last() : new Point(-1, -1);
+            return listPoints.Count != 0 ? listPoints.Last() : new Point();
         }
 
         public List<Point> FindPoints(Bitmap img, Color color)
