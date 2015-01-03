@@ -16,7 +16,7 @@ namespace NmzExpHourTest.ImageProcessing
         }
 
         [Test]
-        public void ReturnsMinus1IfFirstColorNotFound()
+        public void ReturnsEmptyPointIfFirstColorNotFound()
         {
             Bitmap img = new Bitmap(10, 10);
 
@@ -26,7 +26,7 @@ namespace NmzExpHourTest.ImageProcessing
         }
 
         [Test]
-        public void ReturnMinus1IfLastColorNotFound()
+        public void ReturnEmptyPointIfLastColorNotFound()
         {
             Bitmap img = new Bitmap(10, 10);
 
