@@ -16,6 +16,7 @@ namespace NmzExpHour.OCR
             var screenshot = ScreenShotTaker.TakeScreenShot();
             InmzPointsImageFinder.FindNMZPoints(screenshot);
 
+
             return "";
         }
 

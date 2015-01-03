@@ -16,8 +16,8 @@ namespace NmzExpHour.ImageProcessing
 
         public Bitmap FindNMZPoints(Bitmap img)
         {
-            Point firstPoint = ColorFinder.FindFirstColor(img, Colors.Border);
-            Point lastPoint = ColorFinder.FindLastColor(img, Colors.Border);
+            Point firstPoint = ColorFinder.FindFirstColorLocation(img, Colors.Border);
+            Point lastPoint = ColorFinder.FindLastColorLocation(img, Colors.Border);
 
             if (firstPoint.IsEmpty || lastPoint.IsEmpty)
                 return new Bitmap(1, 1);

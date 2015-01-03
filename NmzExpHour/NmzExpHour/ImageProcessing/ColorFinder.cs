@@ -7,47 +7,61 @@ namespace NmzExpHour.ImageProcessing
 
     public interface IColorFinder
     {
-        Point FindFirstColor(Bitmap img, Color color);
-        Point FindLastColor(Bitmap img, Color color);
-        List<Point> FindPoints(Bitmap img, Color color);
+        Point FindFirstColorLocation(Bitmap img, Color color);
+        Point FindLastColorLocation(Bitmap img, Color color);
+        List<Point> FindColorsLocations(Bitmap img, Color color);
     }
 
     public class ColorFinder : IColorFinder
     {
-        public Point FindFirstColor(Bitmap img, Color color)
+        public Point FindFirstColorLocation(Bitmap img, Color color)
         {
-            List<Point> listPoints = FindPoints(img, color);
+            List<Point> listPoints = FindColorsLocations(img, color);
 
             return listPoints.Count != 0 ? listPoints.First() : new Point();
         }
 
-        public Point FindLastColor(Bitmap img, Color color)
+        public Point FindLastColorLocation(Bitmap img, Color color)
         {
-            List<Point> listPoints = FindPoints(img, color);
+            List<Point> listPoints = FindColorsLocations(img, color);
 
             return listPoints.Count != 0 ? listPoints.Last() : new Point();
         }
 
-        public List<Point> FindPoints(Bitmap img, Color color)
+        public List<Point> FindColorsLocations(Bitmap img, Color color)
         {
             List<Point> listPoints = new List<Point>();
 
-            LockBitmap lockBitmap = new LockBitmap(img);
-            lockBitmap.LockBits();
-
-            for (int y = 0; y < lockBitmap.Height; y++)
+            for (int y = 0; y < img.Height; y++)
             {
-                for (int x = 0; x < lockBitmap.Width; x++)
+                for (int x = 0; x < img.Width; x++)
                 {
-                    if (lockBitmap.GetPixel(x, y) == color)
+                    if (img.GetPixel(x, y) == color)
                     {
                         listPoints.Add(new Point(x, y));
                     }
                 }
             }
-            lockBitmap.UnlockBits();
 
             return listPoints;
+        }
+
+        public List<Color> FindColors(Bitmap img)
+        {
+            List<Color> colors = new List<Color>();
+
+            for (int y = 0; y < img.Height; y++)
+            {
+                for (int x = 0; x < img.Width; x++)
+                {
+                    if (!colors.Contains(img.GetPixel(x, y)))
+                    {
+                        colors.Add(img.GetPixel(x, y));
+                    }
+                }
+            }
+
+            return colors;
         }
     }
 }

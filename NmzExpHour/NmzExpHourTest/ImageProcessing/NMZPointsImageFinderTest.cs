@@ -35,6 +35,9 @@ namespace NmzExpHourTest.ImageProcessing
                     Assert.AreEqual(expected.GetPixel(i,j), actual.GetPixel(i, j));
                 }
             }
+
+            entryImage.Dispose();
+            expected.Dispose();
         }
 
         [Test]
@@ -45,6 +48,8 @@ namespace NmzExpHourTest.ImageProcessing
             var actual = NMZPointsImageFinder.FindNMZPoints(entryImage);
 
             Assert.That(actual.IsEmpty());
+
+            entryImage.Dispose();
         }
 
         [Test]
@@ -53,16 +58,18 @@ namespace NmzExpHourTest.ImageProcessing
             var colorFinder = Substitute.For<IColorFinder>();
             var img = new Bitmap(10, 10);
 
-            colorFinder.FindFirstColor(img, Colors.Border).Returns(new Point(0, 0));
-            colorFinder.FindLastColor(img, Colors.Border).Returns(new Point(1, 1));
+            colorFinder.FindFirstColorLocation(img, Colors.Border).Returns(new Point(0, 0));
+            colorFinder.FindLastColorLocation(img, Colors.Border).Returns(new Point(1, 1));
 
 
             NMZPointsImageFinder.ColorFinder = colorFinder;
 
             NMZPointsImageFinder.FindNMZPoints(img);
 
-            colorFinder.Received().FindFirstColor(img, Colors.Border);
-            colorFinder.Received().FindLastColor(img, Colors.Border);
+            colorFinder.Received().FindFirstColorLocation(img, Colors.Border);
+            colorFinder.Received().FindLastColorLocation(img, Colors.Border);
+
+            img.Dispose();
 
         }
 

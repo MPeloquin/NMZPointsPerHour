@@ -71,6 +71,7 @@
     <Compile Include="ImageProcessing\ColorFinderTest.cs" />
     <Compile Include="ImageProcessing\NMZPointsImageFinderTest.cs" />
     <Compile Include="ImageProcessing\ScreenshotTakerTest.cs" />
+    <Compile Include="ImageProcessing\ImageFilteringTest.cs" />
     <Compile Include="OCR\NMZPointsScreenReaderTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

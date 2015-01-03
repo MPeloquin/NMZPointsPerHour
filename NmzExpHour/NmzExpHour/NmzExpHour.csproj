@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,7 +60,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageProcessing\ColorFinder.cs" />
-    <Compile Include="ImageProcessing\LockBitmap.cs" />
+    <Compile Include="ImageProcessing\Colors.cs" />
+    <Compile Include="ImageProcessing\ImageFiltering.cs" />
     <Compile Include="ImageProcessing\NMZPointsPictureFinder.cs" />
     <Compile Include="ImageProcessing\ScreenshotTaker.cs" />
     <Compile Include="OCR\NMZPointsScreenReader.cs" />

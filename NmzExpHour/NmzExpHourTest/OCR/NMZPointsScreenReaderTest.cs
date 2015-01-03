@@ -47,6 +47,8 @@ namespace NmzExpHourTest.OCR
             nmzPointsScreenReader.ScreenToNMZPoints();
 
             pointsFinder.Received().FindNMZPoints(img);
+
+            img.Dispose();
         }
 
         [Test]

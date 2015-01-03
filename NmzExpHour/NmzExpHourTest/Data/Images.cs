@@ -6,6 +6,8 @@
         public static string PointsFullImage = "testPointsPresent0.png";
         public static string PointsSmallImage = "testPointsPresent0Result.png";
         public static string NoPoints = "testPointsAbsent.png";
+        public static string LastPixel = "lastpixel.png";
+        
 
     }
 }
