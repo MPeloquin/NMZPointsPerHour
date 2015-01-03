@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using NmzExpHour.Extensions;
 using NmzExpHour.ImageProcessing;
 using NmzExpHourTest.Data;
 using NSubstitute;
@@ -19,8 +20,8 @@ namespace NmzExpHourTest.ImageProcessing
         [Test]
         public void FindsPointsWhenPresent()
         {
-            var entryImage = new Bitmap(Images.TestPointsPresent0);
-            var expected = new Bitmap(Images.TestPointsPresent0Result);
+            var entryImage = new Bitmap(Images.PointsFullImage);
+            var expected = new Bitmap(Images.PointsSmallImage);
 
             var actual = NMZPointsImageFinder.FindNMZPoints(entryImage);
 
@@ -36,24 +37,32 @@ namespace NmzExpHourTest.ImageProcessing
             }
         }
 
+        [Test]
+        public void ReturnsNothingWhenPointsNotPresent()
+        {
+            var entryImage = new Bitmap(Images.NoPoints);
 
+            var actual = NMZPointsImageFinder.FindNMZPoints(entryImage);
+
+            Assert.That(actual.IsEmpty());
+        }
 
         [Test]
         public void FindsLocationOfPointsWithCallToColorFinder()
         {
             var colorFinder = Substitute.For<IColorFinder>();
             var img = new Bitmap(10, 10);
-            
-            colorFinder.FindFirstColor(img, Color.FromArgb(127, 70, 15)).Returns(new Point(0, 0));
-            colorFinder.FindLastColor(img, Color.FromArgb(127, 70, 15)).Returns(new Point(1, 1));
+
+            colorFinder.FindFirstColor(img, Colors.Border).Returns(new Point(0, 0));
+            colorFinder.FindLastColor(img, Colors.Border).Returns(new Point(1, 1));
 
 
             NMZPointsImageFinder.ColorFinder = colorFinder;
 
             NMZPointsImageFinder.FindNMZPoints(img);
 
-            colorFinder.Received().FindFirstColor(img, Color.FromArgb(127, 70, 15));
-            colorFinder.Received().FindLastColor(img, Color.FromArgb(127, 70, 15));
+            colorFinder.Received().FindFirstColor(img, Colors.Border);
+            colorFinder.Received().FindLastColor(img, Colors.Border);
 
         }
 
