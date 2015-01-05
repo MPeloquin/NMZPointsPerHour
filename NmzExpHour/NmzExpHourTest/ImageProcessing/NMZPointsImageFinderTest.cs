@@ -56,7 +56,7 @@ namespace NmzExpHourTest.ImageProcessing
         public void FindsLocationOfPointsWithCallToColorFinder()
         {
             var colorFinder = Substitute.For<IColorFinder>();
-            var img = new Bitmap(10, 10);
+            var img = new Bitmap(2, 2);
 
             colorFinder.FindFirstColorLocation(img, Colors.Border).Returns(new Point(0, 0));
             colorFinder.FindLastColorLocation(img, Colors.Border).Returns(new Point(1, 1));

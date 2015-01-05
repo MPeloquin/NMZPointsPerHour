@@ -41,7 +41,7 @@ namespace NmzExpHourTest.ImageProcessing
         [Test]
         public void RemovesAllColorsExpectFontColor()
         {
-            var img = new Bitmap("test2.png");
+            var img = new Bitmap(Images.PointsSmallImage);
 
             var expected = new List<Color> { Color.FromArgb(255, 255, 255), Color.FromArgb(0, 0, 0) };
 
@@ -55,8 +55,6 @@ namespace NmzExpHourTest.ImageProcessing
             {
                 Assert.That(actual.Contains(color), "Color not found : " + color);
             }
-
-            imgNoColor.Save("hello.png");
 
             img.Dispose();
             imgNoColor.Dispose();
