@@ -71,6 +71,7 @@
     <Compile Include="ImageProcessing\ImageFilteringTest.cs" />
     <Compile Include="OCR\NMZPointsScreenReaderTest.cs" />
     <Compile Include="OCR\OpticalNumberRecognizerTest.cs" />
+    <Compile Include="OCR\NumberSignatureRecognizerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ListCleanerTest.cs" />
   </ItemGroup>

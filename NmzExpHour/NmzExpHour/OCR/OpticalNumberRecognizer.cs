@@ -10,28 +10,20 @@ namespace NmzExpHour.OCR
 {
     public class OpticalNumberRecognizer
     {
-        private const int FiveOrTwoOrNine = 15;
+        private const int TwoOrFiveOrNine = 15;
         private const int OneOrSeven = 11;
         private const int ThreeOrFour = 13;
         private const int SixOrZero = 18;
         private const int Heigh = 19;
         private readonly ColorFinder finder;
-
-        private readonly List<Tuple<string, List<int>>> signatures;
-
+        private readonly ListCleaner listCleaner;
+        private readonly NumberSignatureRecognizer numberSignatureRecognizer;
 
         public OpticalNumberRecognizer()
         {
+            numberSignatureRecognizer = new NumberSignatureRecognizer();
             finder = new ColorFinder();
-
-            signatures = new List<Tuple<string, List<int>>>
-            {		
-                new Tuple<string, List<int>>("0", new List<int> {3, 2, 2, 2, 2, 2, 2, 3}),
-                new Tuple<string, List<int>>("1", new List<int> {1, 2, 1, 1, 1, 1, 1, 3}),
-                new Tuple<string, List<int>>("3", new List<int> {2, 2, 1, 2, 1, 1, 2, 2}),
-                new Tuple<string, List<int>>("5", new List<int> {4, 1, 1, 3, 1, 1, 2, 2}),
-                new Tuple<string, List<int>>("9", new List<int> {3, 2, 2, 2, 3, 1, 1, 1}),
-            };
+            listCleaner = new ListCleaner();
         }
 
         public string RecognizeNumber(Bitmap img)
@@ -42,7 +34,7 @@ namespace NmzExpHour.OCR
             {
                 case OneOrSeven:
                     return Differenciate(new List<string> { "1", "7" }, img);
-                case FiveOrTwoOrNine:
+                case TwoOrFiveOrNine:
                     return Differenciate(new List<string> {"9","5", "2"}, img);
                 case ThreeOrFour:
                     return Differenciate(new List<string>{"3","4"}, img);
@@ -57,7 +49,7 @@ namespace NmzExpHour.OCR
 
         private string Differenciate(List<string> numbers, Bitmap img)
         {
-            List<int> rows = new List<int>(new int[img.Height]);
+            List<int> signature = new List<int>(new int[img.Height]);
 
             unsafe
             {
@@ -77,34 +69,17 @@ namespace NmzExpHour.OCR
 
                         if ((red <= 3) && (green <= 3) && (blue <= 3))
                         {
-                            rows[y]++;
+                            signature[y]++;
                         }
                     }
                 }
                 img.UnlockBits(bitmapData);
             }
-            
-            rows = new ListCleaner().RemoveZerosFromRow(rows);
 
-            foreach (var number in numbers)
-            {
-                if (signatures.Any(signature => signature.Item1 == number && IsSignature(rows, signature.Item2)))
-                {
-                    return number;
-                }
-            }
-
-            return numbers.Last();
+            signature = listCleaner.RemoveZerosFromRow(signature);
+            return numberSignatureRecognizer.RecognizeSignature(signature, numbers);
         }
 
-        private bool IsSignature(List<int> rows, List<int> signature)
-        {
-            for (int i = 0; i < rows.Count; i++)
-            {
-                if (rows[i] != signature[i])
-                    return false;
-            }
-            return true;
-        }
+
     }
 }
