@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+using NSubstitute.Exceptions;
 
 namespace NmzExpHour.ImageProcessing
 {
@@ -39,12 +38,11 @@ namespace NmzExpHour.ImageProcessing
             unsafe
             {
                 BitmapData bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadWrite, img.PixelFormat);
-                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(img.PixelFormat) / 8;
-                int heightInPixels = bitmapData.Height;
+                int bytesPerPixel = Image.GetPixelFormatSize(img.PixelFormat) / 8;
                 int widthInBytes = bitmapData.Width * bytesPerPixel;
                 byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
 
-                for (int y = 0; y < heightInPixels; y++)
+                for (int y = 0; y < bitmapData.Height; y++)
                 {
                     byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
                     for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
@@ -69,18 +67,65 @@ namespace NmzExpHour.ImageProcessing
         {
             List<Color> colors = new List<Color>();
 
-            for (int y = 0; y < img.Height; y++)
+            unsafe
             {
-                for (int x = 0; x < img.Width; x++)
+                BitmapData bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadWrite, img.PixelFormat);
+                int bytesPerPixel = Image.GetPixelFormatSize(img.PixelFormat) / 8;
+                int widthInBytes = bitmapData.Width * bytesPerPixel;
+                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+
+                for (int y = 0; y < bitmapData.Height; y++)
                 {
-                    if (!colors.Contains(img.GetPixel(x, y)))
+                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                    for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                     {
-                        colors.Add(img.GetPixel(x, y));
+                        Color currentColor = Color.FromArgb(currentLine[x + 2], currentLine[x + 1], currentLine[x]);
+
+                        if (!colors.Contains(currentColor))
+                        {
+                            colors.Add(currentColor);
+                        }
                     }
                 }
+                img.UnlockBits(bitmapData);
             }
 
+
             return colors;
+        }
+
+        public int CountColor(Bitmap img, Color color, int tolerance = 0)
+        {
+            int count = 0;
+
+            unsafe
+            {
+                BitmapData bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadWrite, img.PixelFormat);
+                int bytesPerPixel = Image.GetPixelFormatSize(img.PixelFormat) / 8;
+                int widthInBytes = bitmapData.Width * bytesPerPixel;
+                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+
+                for (int y = 0; y < bitmapData.Height; y++)
+                {
+                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                    for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
+                    {
+                        int red = currentLine[x + 2];
+                        int green = currentLine[x + 1];
+                        int blue = currentLine[x];
+
+                        if ((Math.Abs(color.R - red) <= tolerance) &&
+                            (Math.Abs(color.G - green) <= tolerance) &&
+                            (Math.Abs(color.B - blue) <= tolerance))
+                        {
+                            count++;
+                        }
+                    }
+                }
+                img.UnlockBits(bitmapData);
+            }
+
+            return count;
         }
     }
 }

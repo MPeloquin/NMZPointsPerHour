@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using NmzExpHour.ImageProcessing;
 using NmzExpHourTest.Data;
 using NUnit.Framework;
@@ -75,9 +77,18 @@ namespace NmzExpHourTest.ImageProcessing
         [Test]
         public void ReturnsTheListOfColorsPresentInAnImage()
         {
-            Img = new Bitmap(Images.PointsSmallImage);
-            List<Color> expected = new List<Color> { Color.FromArgb(0,0,0), Colors.Border, Colors.Font, Color.FromArgb(92, 72, 46), Color.FromArgb(92, 71, 46),  Color.FromArgb(93, 72, 47),
-                                                     Color.FromArgb(92, 70, 42), Color.FromArgb(93, 71, 42), Color.FromArgb(88, 67, 41), Color.FromArgb(93, 71, 47)};
+            Img = new Bitmap(5, 5);
+            Img.SetPixel(2, 1, Color.FromArgb(255, 0, 0));
+            Img.SetPixel(1, 2, Color.FromArgb(0, 255, 0));
+            Img.SetPixel(4, 4, Color.FromArgb(0, 0, 255));
+            
+            List<Color> expected = new List<Color>
+            {
+                Color.FromArgb(255,0,0), 
+                Color.FromArgb(0, 255, 0), 
+                Color.FromArgb(0, 0, 255),
+                Color.FromArgb(0, 0, 0), // default color
+            };
 
             var actual = ColorFinder.FindColors(Img);
 
@@ -87,6 +98,34 @@ namespace NmzExpHourTest.ImageProcessing
             {
                 Assert.That(actual.Contains(color), "Color not found : " + color);
             }
+        }
+
+        [Test]
+        public void ReturnsTheNumberOfTimesAColorWasFound()
+        {
+            Img = new Bitmap(2, 2);
+            Img.SetPixel(1,1, Color.FromArgb(255, 0, 0));
+            Img.SetPixel(0, 1, Color.FromArgb(255, 0, 0));
+            Img.SetPixel(1, 0, Color.FromArgb(0,255, 0));
+
+            var actual = ColorFinder.CountColor(Img, Color.FromArgb(255,0,0));
+
+
+            Assert.AreEqual(2, actual);
+        }
+
+        [Test]
+        public void ReturnsTheNumberOfTimeACloseColorWasFound()
+        {
+            Img = new Bitmap(2, 2);
+            Img.SetPixel(1, 1, Color.FromArgb(1, 1, 0));
+            Img.SetPixel(0, 1, Color.FromArgb(255, 0, 0));
+            Img.SetPixel(1, 0, Color.FromArgb(0, 255, 0));
+
+            var actual = ColorFinder.CountColor(Img, Color.FromArgb(0, 0, 0), 2);
+
+
+            Assert.AreEqual(2, actual);
         }
 
         [Test]
