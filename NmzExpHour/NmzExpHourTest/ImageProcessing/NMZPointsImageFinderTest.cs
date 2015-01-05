@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
-using NmzExpHour.Extensions;
 using NmzExpHour.ImageProcessing;
+using NmzExpHour.Utils;
 using NmzExpHourTest.Data;
 using NSubstitute;
 using NUnit.Framework;

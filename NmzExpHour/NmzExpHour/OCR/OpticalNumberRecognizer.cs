@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Security.Cryptography;
 using NmzExpHour.ImageProcessing;
+using NmzExpHour.Utils;
 
 namespace NmzExpHour.OCR
 {
@@ -84,7 +84,7 @@ namespace NmzExpHour.OCR
                 img.UnlockBits(bitmapData);
             }
             
-            rows = RemoveZerosFromRow(rows);
+            rows = new ListCleaner().RemoveZerosFromRow(rows);
 
             foreach (var number in numbers)
             {
@@ -95,36 +95,6 @@ namespace NmzExpHour.OCR
             }
 
             return numbers.Last();
-        }
-
-        private static List<int> RemoveZerosFromRow(List<int> rows)
-        {
-            int firstElement = -1;
-            int lastElement = 0;
-
-            for (int i = 0; i < rows.Count; i++)
-            {
-                if (rows[i] != 0 && firstElement == -1)
-                    firstElement = i;
-                if (rows[i] != 0)
-                    lastElement = i;
-            }
-
-            for (int i = 0; i < firstElement; i++)
-            {
-                rows.RemoveAt(i);
-                i--;
-                firstElement--;
-                lastElement--;
-            }
-
-            for (int i = lastElement + 1; i < rows.Count; i++)
-            {
-                rows.RemoveAt(i);
-                i--;
-            }
-
-            return rows;
         }
 
         private bool IsSignature(List<int> rows, List<int> signature)

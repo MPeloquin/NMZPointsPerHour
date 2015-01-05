@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace NmzExpHour.Extensions
+namespace NmzExpHour.Utils
 {
     public static class Extensions
     {
