@@ -61,6 +61,7 @@
     <Compile Include="ImageProcessing\NMZPointsPictureFinder.cs" />
     <Compile Include="ImageProcessing\ScreenshotTaker.cs" />
     <Compile Include="OCR\NMZPointsScreenReader.cs" />
+    <Compile Include="OCR\OpticalNumberRecognizer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
