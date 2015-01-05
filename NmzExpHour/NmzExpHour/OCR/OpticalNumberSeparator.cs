@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
-using NmzExpHour.ImageProcessing;
 
 namespace NmzExpHour.OCR
 {
@@ -11,16 +8,8 @@ namespace NmzExpHour.OCR
     {
         public List<Bitmap> Separate(Bitmap img)
         {
-            if(new ColorFinder().CountColor(img, Color.FromArgb(0,0,0), 10) == 0)
-                return new List<Bitmap>();
-
-
-            int leftX = -1;
-            int rightX = -1;
             Point topLimit = new Point(-1,-1);
             Point bottomLimit = new Point(-1,-1);
-            int topY = -1;
-            int bottomY = -1;
 
             unsafe
             {
@@ -41,33 +30,58 @@ namespace NmzExpHour.OCR
 
                         if ((red <= 10) && (green <= 10) && (blue <= 10))
                         {
-                            if (topY == -1)
-                                topY = y;
-                            if (leftX == -1 || actualX < leftX)
-                                leftX = actualX;
-                            if (actualX > rightX && actualX < (leftX + 5))
-                                rightX = actualX;
-                            if (y > bottomY && actualX < (leftX + 5))
-                                bottomY = y;
+                            if (TopLimitNotYetSet(topLimit))
+                                topLimit.Y = y;
+                            if (CurrentXIsMoreToTheLeftThanLimit(topLimit, actualX))
+                                topLimit.X = actualX;
+                            if (CurrentXIsMoreToTheRightThenLimitButNotTooFar(actualX, bottomLimit, topLimit))
+                                bottomLimit.X = actualX;
+                            if (CurrentYIsMoreToTheBottomThanLimitButNotTooFar(y, bottomLimit, actualX, topLimit))
+                                bottomLimit.Y = y;
                         }
                     }
                 }
                 img.UnlockBits(bitmapData);
             }
 
-            Size rectSize = new Size((rightX - leftX+1), (bottomY - topY+1));
+            Size rectSize = new Size((bottomLimit.X - topLimit.X + 1), (bottomLimit.Y - topLimit.Y + 1));
 
             var result =  new List<Bitmap>
             {
-                img.Clone(new Rectangle(new Point(leftX, topY), rectSize), img.PixelFormat),
+                img.Clone(new Rectangle(new Point(topLimit.X, topLimit.Y), rectSize), img.PixelFormat),
             };
 
 
-            if ((img.Width - 1 - rectSize.Width) > 5)
-                result.AddRange(Separate(img.Clone(new Rectangle(new Point(rightX + 1, 0), new Size(img.Width - rightX - 1, img.Height)),
+            if (ImageHasAnOtherNumber(img, bottomLimit))
+                result.AddRange(Separate(img.Clone(new Rectangle(new Point(bottomLimit.X + 1, 0), new Size(img.Width - bottomLimit.X - 1, img.Height)),
                                         img.PixelFormat)));
 
             return result;
+        }
+
+        private static bool ImageHasAnOtherNumber(Bitmap img, Point bottomLimit)
+        {
+            return (img.Width - 1 - bottomLimit.X) > 5;
+        }
+
+        private static bool CurrentYIsMoreToTheBottomThanLimitButNotTooFar(int y, Point bottomLimit, int actualX, Point topLimit)
+        {
+            return y > bottomLimit.Y && actualX < (topLimit.X + 5);
+        }
+
+        private static bool CurrentXIsMoreToTheRightThenLimitButNotTooFar(int actualX, Point bottomLimit, Point topLimit)
+        {
+            return actualX > bottomLimit.X && actualX < (topLimit.X + 5);
+        }
+
+        private static bool CurrentXIsMoreToTheLeftThanLimit(Point topLimit, int actualX)
+        {
+            return topLimit.X == -1 || actualX < topLimit.X;
+        }
+
+        private static bool TopLimitNotYetSet(Point topLimit)
+        {
+            return topLimit.Y == -1;
         }
     }
 }

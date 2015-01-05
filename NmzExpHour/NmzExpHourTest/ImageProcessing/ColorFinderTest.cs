@@ -146,15 +146,11 @@ namespace NmzExpHourTest.ImageProcessing
 
         }
 
-
         [TearDown]
         public void TearDown()
         {
             Img.Dispose();
         }
-
-
-
 
         public ColorFinder ColorFinder { get; set; }
         public Bitmap Img { get; set; }
