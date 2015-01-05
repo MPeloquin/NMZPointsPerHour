@@ -60,8 +60,7 @@ namespace NmzExpHourTest.ImageProcessing
 
             colorFinder.FindFirstColorLocation(img, Colors.Border).Returns(new Point(0, 0));
             colorFinder.FindLastColorLocation(img, Colors.Border).Returns(new Point(1, 1));
-
-
+            
             NMZPointsImageFinder.ColorFinder = colorFinder;
 
             NMZPointsImageFinder.FindNMZPoints(img);
@@ -70,7 +69,6 @@ namespace NmzExpHourTest.ImageProcessing
             colorFinder.Received().FindLastColorLocation(img, Colors.Border);
 
             img.Dispose();
-
         }
 
 

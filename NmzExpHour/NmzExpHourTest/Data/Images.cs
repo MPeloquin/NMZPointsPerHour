@@ -22,6 +22,8 @@
         public static string OCRRow = "OCRImages\\RowNumbers.jpg";
         public static string OCRRowComma = "OCRImages\\RowNumbersComma.jpg";
         public static string OCRLarge9 = "OCRImages\\Large9.jpg";
+        public static string OCRTwoNumbers = "OCRImages\\TwoNumbers.jpg";
+        public static string OCRThreeNumbers = "OCRImages\\ThreeNumbers.jpg";
 
 
 

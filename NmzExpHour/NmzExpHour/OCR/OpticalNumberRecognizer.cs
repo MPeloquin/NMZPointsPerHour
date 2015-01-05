@@ -28,7 +28,7 @@ namespace NmzExpHour.OCR
 
         public string RecognizeNumber(Bitmap img)
         {
-            var count = finder.CountColor(img, Color.FromArgb(0, 0, 0), 3);
+            var count = finder.CountColor(img, Color.FromArgb(0, 0, 0), 10);
 
             switch (count)
             {
@@ -67,7 +67,7 @@ namespace NmzExpHour.OCR
                         int green = currentLine[x + 1];
                         int blue = currentLine[x];
 
-                        if ((red <= 3) && (green <= 3) && (blue <= 3))
+                        if ((red <= 10) && (green <= 10) && (blue <= 10))
                         {
                             signature[y]++;
                         }

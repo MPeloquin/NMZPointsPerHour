@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OCR\NumberSignatureRecognizer.cs" />
+    <Compile Include="OCR\OpticalNumberSeparator.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
