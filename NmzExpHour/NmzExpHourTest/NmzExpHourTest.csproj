@@ -69,6 +69,8 @@
     <Compile Include="ImageProcessing\NMZPointsImageFinderTest.cs" />
     <Compile Include="ImageProcessing\ScreenshotTakerTest.cs" />
     <Compile Include="ImageProcessing\ImageFilteringTest.cs" />
+    <Compile Include="ImageProcessing\PixelFormatConverterTest.cs" />
+    <Compile Include="ImageProcessing\CommaRemoverTest.cs" />
     <Compile Include="OCR\NMZPointsScreenReaderTest.cs" />
     <Compile Include="OCR\OpticalNumberRecognizerTest.cs" />
     <Compile Include="OCR\NumberSignatureRecognizerTest.cs" />

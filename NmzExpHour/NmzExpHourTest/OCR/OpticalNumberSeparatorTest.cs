@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using NmzExpHour.ImageProcessing;
 using NmzExpHour.OCR;
 using NmzExpHourTest.Data;
 using NUnit.Framework;
@@ -10,7 +11,7 @@ namespace NmzExpHourTest.OCR
     public class OpticalNumberSeparatorTest
     {
         [Test]
-        public void CanSeperateTwoNumbers()
+        public void CanSeparateTwoNumbers()
         {
             Bitmap nineFiveImage = new Bitmap(Images.OCRTwoNumbers);
 
@@ -23,7 +24,7 @@ namespace NmzExpHourTest.OCR
         }
 
         [Test]
-        public void CanSeperateThreeNumbers()
+        public void CanSeparateThreeNumbers()
         {
             Bitmap nineFiveHeighImage = new Bitmap(Images.OCRThreeNumbers);
 
@@ -37,13 +38,14 @@ namespace NmzExpHourTest.OCR
         }
 
         [Test]
-        public void CanSeperateMultipleNumbers()
+        public void CanSeparateMultipleNumbers()
         {
             Bitmap rowOfNumbers = new Bitmap(Images.OCRRow);
 
-            List<Bitmap> actual = new OpticalNumberSeparator().Separate(rowOfNumbers);
+            List<Bitmap> actual = new OpticalNumberSeparator().Separate(new PixelFormatConverter().To24BppRGB(rowOfNumbers));
 
             var ocr = new OpticalNumberRecognizer();
+
 
             Assert.AreEqual("9", ocr.RecognizeNumber(actual[0]));
             Assert.AreEqual("5", ocr.RecognizeNumber(actual[1]));

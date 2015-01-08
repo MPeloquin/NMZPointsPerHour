@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using NSubstitute.Exceptions;
+using NmzExpHour.Utils;
 
 namespace NmzExpHour.ImageProcessing
 {
@@ -13,6 +12,7 @@ namespace NmzExpHour.ImageProcessing
         Point FindFirstColorLocation(Bitmap img, Color color);
         Point FindLastColorLocation(Bitmap img, Color color);
         List<Point> FindColorsLocations(Bitmap img, Color color);
+        int CountColor(Bitmap img, Color color, int tolerance = 0);
     }
 
     public class ColorFinder : IColorFinder
@@ -47,11 +47,9 @@ namespace NmzExpHour.ImageProcessing
                     byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
                     for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                     {
-                        int blue = currentLine[x];
-                        int green = currentLine[x + 1];
-                        int red = currentLine[x + 2];
-
-                        if (Color.FromArgb(red, green, blue) == color)
+                        Color currentColor = Color.FromArgb(currentLine[x + 2], currentLine[x + 1], currentLine[x]);
+                        
+                        if (currentColor == color)
                         {
                             listPoints.Add(new Point(x / 4, y));
                         }
@@ -110,13 +108,9 @@ namespace NmzExpHour.ImageProcessing
                     byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
                     for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                     {
-                        int red = currentLine[x + 2];
-                        int green = currentLine[x + 1];
-                        int blue = currentLine[x];
+                        Color currentColor = Color.FromArgb(currentLine[x + 2], currentLine[x + 1], currentLine[x]);
 
-                        if ((Math.Abs(color.R - red) <= tolerance) &&
-                            (Math.Abs(color.G - green) <= tolerance) &&
-                            (Math.Abs(color.B - blue) <= tolerance))
+                        if (currentColor.IsAlmost(color, tolerance))
                         {
                             count++;
                         }

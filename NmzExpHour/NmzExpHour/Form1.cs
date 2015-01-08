@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NmzExpHour.OCR;
 
 namespace NmzExpHour
 {
@@ -18,9 +19,9 @@ namespace NmzExpHour
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-
+            label1.Text = new NMZPointsScreenReader().ScreenToNMZPoints();
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using NmzExpHour.ImageProcessing;
 using NmzExpHourTest.Data;
 using NUnit.Framework;

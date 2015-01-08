@@ -2,6 +2,7 @@
 using System.Drawing;
 using NmzExpHour.ImageProcessing;
 using NmzExpHourTest.Data;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace NmzExpHourTest.ImageProcessing
@@ -9,12 +10,12 @@ namespace NmzExpHourTest.ImageProcessing
     [TestFixture]
     public class ImageFilteringTest
     {
-        private ImageFiltering imageFiltering;
+        private ImageFilterer imageFilterer;
 
         [SetUp]
         public void SetUp()
         {
-            imageFiltering = new ImageFiltering();
+            imageFilterer = new ImageFilterer();
         }
 
         [Test]
@@ -26,7 +27,7 @@ namespace NmzExpHourTest.ImageProcessing
             var blackBefore = colorFinder.FindFirstColorLocation(img, Color.FromArgb(0, 0, 0));
             var fontColorBefore = colorFinder.FindFirstColorLocation(img, Colors.Font);
 
-            var newImage = imageFiltering.FilterImage(img);
+            var newImage = imageFilterer.FilterImage(img);
 
             var blackAfter = colorFinder.FindFirstColorLocation(img, Color.FromArgb(0, 0, 0));
             var fontColorAfter = colorFinder.FindFirstColorLocation(img, Colors.Font);
@@ -45,7 +46,7 @@ namespace NmzExpHourTest.ImageProcessing
 
             var expected = new List<Color> { Color.FromArgb(255, 255, 255), Color.FromArgb(0, 0, 0) };
 
-            var imgNoColor = imageFiltering.FilterImage(img);
+            var imgNoColor = imageFilterer.FilterImage(img);
 
             var actual = new ColorFinder().FindColors(img);
 
@@ -60,7 +61,41 @@ namespace NmzExpHourTest.ImageProcessing
             imgNoColor.Dispose();
         }
 
+        [Test]
+        public void CropsThePointsOut()
+        {
+            var entry = new Bitmap(Images.PointsSmallImage);
+            var expected = new Bitmap(Images.NumbersNoPoints);
 
+            var actual = imageFilterer.FilterImage(entry);
+
+            for (int i = 0; i < actual.Width; i++)
+            {
+                for (int j = 0; j < actual.Height; j++)
+                {
+                    Assert.AreEqual(expected.GetPixel(i, j), actual.GetPixel(i, j));
+                }
+            }
+
+            entry.Dispose();
+            expected.Dispose();
+            actual.Dispose();
+        }
+
+        [Test]
+        public void CallsCommaRemover()
+        {
+            var commaRemover = Substitute.For<ICommaRemover>();
+            imageFilterer.CommaRemover = commaRemover;
+            
+            Bitmap img= new Bitmap(3,3);
+            Bitmap entryImage = new Bitmap(2,2);
+            commaRemover.RemoveComma(entryImage).ReturnsForAnyArgs(img);
+
+            imageFilterer.FilterImage(entryImage);
+
+            commaRemover.ReceivedCalls();
+        }
 
     }
 }

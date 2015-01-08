@@ -2,12 +2,16 @@
 {
     public static class Images
     {
-        public static string Empty = "Images\\testEmpty.png";
         public static string PointsFullImage = "Images\\testPointsPresent0.png";
         public static string PointsSmallImage = "Images\\testPointsPresent0Result.png";
         public static string NoPoints = "Images\\testPointsAbsent.png";
         public static string LastPixel = "Images\\lastpixel.png";
         public static string PointsText = "Images\\pointsText.png";
+        public static string NumbersNoPoints = "Images\\textNoPoints.png";
+        public static string TwoCommas = "Images\\TwoCommas.png";
+        public static string TwoCommasNoComma = "Images\\TwoCommasNoComma.png";
+        public static string Ones = "Images\\Ones.png";
+
 
         public static string OCROne = "OCRImages\\1.jpg";
         public static string OCRTwo = "OCRImages\\2.jpg";
@@ -24,8 +28,6 @@
         public static string OCRLarge9 = "OCRImages\\Large9.jpg";
         public static string OCRTwoNumbers = "OCRImages\\TwoNumbers.jpg";
         public static string OCRThreeNumbers = "OCRImages\\ThreeNumbers.jpg";
-
-
 
 
     }

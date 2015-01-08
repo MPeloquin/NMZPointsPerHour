@@ -8,7 +8,12 @@ using NmzExpHour.Utils;
 
 namespace NmzExpHour.OCR
 {
-    public class OpticalNumberRecognizer
+    public interface IOpticalNumberRecognizer
+    {
+        string RecognizeNumber(Bitmap img);
+    }
+
+    public class OpticalNumberRecognizer : IOpticalNumberRecognizer
     {
         private const int TwoOrFiveOrNine = 15;
         private const int OneOrSeven = 11;

@@ -1,16 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using NmzExpHour.ImageProcessing;
+using NmzExpHour.Utils;
 
 namespace NmzExpHour.OCR
 {
-    public class OpticalNumberSeparator
+    public interface IOpticalNumberSeparator
     {
-        public List<Bitmap> Separate(Bitmap img)
+        List<Bitmap> Separate(Bitmap img);
+    }
+
+    public class OpticalNumberSeparator : IOpticalNumberSeparator
+    {
+        public List<Bitmap> Separate(Bitmap img32)
         {
             Point topLimit = new Point(-1,-1);
             Point bottomLimit = new Point(-1,-1);
 
+            Bitmap img = new PixelFormatConverter().To24BppRGB(img32);
+           // img.Save(img.Width + ".png");
             unsafe
             {
                 BitmapData bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadWrite, img.PixelFormat);
@@ -23,22 +32,19 @@ namespace NmzExpHour.OCR
                     byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
                     for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                     {
-                        int red = currentLine[x + 2];
-                        int green = currentLine[x + 1];
-                        int blue = currentLine[x];
+                        Color currentColor = Color.FromArgb(currentLine[x + 2], currentLine[x + 1], currentLine[x]);
+
                         int actualX = x/3;
 
-                        if ((red <= 10) && (green <= 10) && (blue <= 10))
-                        {
-                            if (TopLimitNotYetSet(topLimit))
-                                topLimit.Y = y;
-                            if (CurrentXIsMoreToTheLeftThanLimit(topLimit, actualX))
-                                topLimit.X = actualX;
-                            if (CurrentXIsMoreToTheRightThenLimitButNotTooFar(actualX, bottomLimit, topLimit))
-                                bottomLimit.X = actualX;
-                            if (CurrentYIsMoreToTheBottomThanLimitButNotTooFar(y, bottomLimit, actualX, topLimit))
-                                bottomLimit.Y = y;
-                        }
+                        if (!currentColor.IsAlmost(Color.Black)) continue;
+                        if (TopLimitNotYetSet(topLimit))
+                            topLimit.Y = y;
+                        if (CurrentXIsMoreToTheLeftThanLimit(topLimit, actualX))
+                            topLimit.X = actualX;
+                        if (CurrentXIsMoreToTheRightThenLimitButNotTooFar(actualX, bottomLimit, topLimit))
+                            bottomLimit.X = actualX;
+                        if (CurrentYIsMoreToTheBottomThanLimitButNotTooFar(y, bottomLimit, actualX, topLimit))
+                            bottomLimit.Y = y;
                     }
                 }
                 img.UnlockBits(bitmapData);

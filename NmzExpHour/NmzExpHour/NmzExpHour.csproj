@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageProcessing\CommaRemover.cs" />
+    <Compile Include="ImageProcessing\PixelFormatConverter.cs" />
     <Compile Include="OCR\NumberSignatureRecognizer.cs" />
     <Compile Include="OCR\OpticalNumberSeparator.cs" />
     <Compile Include="Utils\Extensions.cs" />
@@ -59,7 +61,7 @@
     </Compile>
     <Compile Include="ImageProcessing\ColorFinder.cs" />
     <Compile Include="ImageProcessing\Colors.cs" />
-    <Compile Include="ImageProcessing\ImageFiltering.cs" />
+    <Compile Include="ImageProcessing\ImageFilterer.cs" />
     <Compile Include="ImageProcessing\NMZPointsPictureFinder.cs" />
     <Compile Include="ImageProcessing\ScreenshotTaker.cs" />
     <Compile Include="OCR\NMZPointsScreenReader.cs" />
