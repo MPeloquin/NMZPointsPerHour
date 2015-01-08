@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace NmzExpHour.ImageProcessing
 {
-    public class ImageFiltering
+    public interface IImageFilterer
     {
+        Bitmap FilterImage(Bitmap img);
+    }
+
+    public class ImageFilterer : IImageFilterer
+    {
+        public ImageFilterer()
+        {
+            CommaRemover = new CommaRemover();
+        }
 
         public Bitmap FilterImage(Bitmap img)
         {
@@ -42,7 +49,13 @@ namespace NmzExpHour.ImageProcessing
                 img.UnlockBits(bitmapData);
             }
 
-            return img;
+            var filteredImg = img.Clone(new Rectangle(0, img.Height/2, img.Width, img.Height/2),
+                    img.PixelFormat);
+
+            return CommaRemover.RemoveComma(filteredImg);
         }
+
+        public ICommaRemover CommaRemover { get; set; }
+
     }
 }
