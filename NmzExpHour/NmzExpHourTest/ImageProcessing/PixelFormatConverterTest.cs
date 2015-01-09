@@ -12,7 +12,7 @@ namespace NmzExpHourTest.ImageProcessing
         [Test]
         public void Converts32BppRbGto24BppRbg()
         {
-            var img32Bpp = new Bitmap(Images.OCRRow);
+            var img32Bpp = new Bitmap(Images.Image32Bpp);
 
             Assert.AreEqual(PixelFormat.Format32bppArgb, img32Bpp.PixelFormat);
 

@@ -21,7 +21,6 @@ namespace NmzExpHour.OCR
             var filteredImage = ImageFilterer.FilterImage(points);
             var listNumbers = Separator.Separate(filteredImage);
 
-
             return listNumbers.Aggregate("", (current, number) => current + OCR.RecognizeNumber(number));
         }
 

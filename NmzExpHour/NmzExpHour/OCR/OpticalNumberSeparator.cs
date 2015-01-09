@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using NmzExpHour.ImageProcessing;
@@ -15,79 +16,56 @@ namespace NmzExpHour.OCR
     {
         public List<Bitmap> Separate(Bitmap img32)
         {
-            Point topLimit = new Point(-1,-1);
-            Point bottomLimit = new Point(-1,-1);
-
             Bitmap img = new PixelFormatConverter().To24BppRGB(img32);
-           // img.Save(img.Width + ".png");
-            unsafe
+            
+            var whiteColumns = InitiateListWithTrueAndColumnIndex(img);
+
+            FindWhiteColumnsInImage(img, whiteColumns);
+
+            new ListCleaner().RemoveBackToBackTrueColumnAndFalseColumns(whiteColumns);
+
+            return SeparateNumbersWithWhiteColumnsAsDelimiter(img, whiteColumns);
+        }
+
+        private static List<Tuple<bool, int>> InitiateListWithTrueAndColumnIndex(Bitmap img)
+        {
+            List<Tuple<bool, int>> whiteColumns = new List<Tuple<bool, int>>(img.Width);
+
+            for (int i = 0; i < whiteColumns.Capacity; i++)
             {
-                BitmapData bitmapData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadWrite, img.PixelFormat);
-                int bytesPerPixel = Image.GetPixelFormatSize(img.PixelFormat) / 8;
-                int widthInBytes = bitmapData.Width * bytesPerPixel;
-                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
-
-                for (int y = 0; y < bitmapData.Height; y++)
-                {
-                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
-                    for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
-                    {
-                        Color currentColor = Color.FromArgb(currentLine[x + 2], currentLine[x + 1], currentLine[x]);
-
-                        int actualX = x/3;
-
-                        if (!currentColor.IsAlmost(Color.Black)) continue;
-                        if (TopLimitNotYetSet(topLimit))
-                            topLimit.Y = y;
-                        if (CurrentXIsMoreToTheLeftThanLimit(topLimit, actualX))
-                            topLimit.X = actualX;
-                        if (CurrentXIsMoreToTheRightThenLimitButNotTooFar(actualX, bottomLimit, topLimit))
-                            bottomLimit.X = actualX;
-                        if (CurrentYIsMoreToTheBottomThanLimitButNotTooFar(y, bottomLimit, actualX, topLimit))
-                            bottomLimit.Y = y;
-                    }
-                }
-                img.UnlockBits(bitmapData);
+                whiteColumns.Add(new Tuple<bool, int>(true, i));
             }
+            return whiteColumns;
+        }
 
-            Size rectSize = new Size((bottomLimit.X - topLimit.X + 1), (bottomLimit.Y - topLimit.Y + 1));
-
-            var result =  new List<Bitmap>
+        private static List<Bitmap> SeparateNumbersWithWhiteColumnsAsDelimiter(Bitmap img, List<Tuple<bool, int>> whiteColumns)
+        {
+            List<Bitmap> result = new List<Bitmap>
             {
-                img.Clone(new Rectangle(new Point(topLimit.X, topLimit.Y), rectSize), img.PixelFormat),
+                img.Clone(Rectangle.FromLTRB(0, 0, whiteColumns[1].Item2, img.Height), img.PixelFormat)
             };
 
-
-            if (ImageHasAnOtherNumber(img, bottomLimit))
-                result.AddRange(Separate(img.Clone(new Rectangle(new Point(bottomLimit.X + 1, 0), new Size(img.Width - bottomLimit.X - 1, img.Height)),
-                                        img.PixelFormat)));
-
+            for (int i = 1; i < whiteColumns.Count - 1; i++)
+            {
+                result.Add(img.Clone(Rectangle.FromLTRB(whiteColumns[i].Item2, 0, whiteColumns[i + 1].Item2, img.Height),
+                    img.PixelFormat));
+            }
             return result;
         }
 
-        private static bool ImageHasAnOtherNumber(Bitmap img, Point bottomLimit)
+        private static void FindWhiteColumnsInImage(Bitmap img, List<Tuple<bool, int>> emptyColumn)
         {
-            return (img.Width - 1 - bottomLimit.X) > 5;
-        }
-
-        private static bool CurrentYIsMoreToTheBottomThanLimitButNotTooFar(int y, Point bottomLimit, int actualX, Point topLimit)
-        {
-            return y > bottomLimit.Y && actualX < (topLimit.X + 5);
-        }
-
-        private static bool CurrentXIsMoreToTheRightThenLimitButNotTooFar(int actualX, Point bottomLimit, Point topLimit)
-        {
-            return actualX > bottomLimit.X && actualX < (topLimit.X + 5);
-        }
-
-        private static bool CurrentXIsMoreToTheLeftThanLimit(Point topLimit, int actualX)
-        {
-            return topLimit.X == -1 || actualX < topLimit.X;
-        }
-
-        private static bool TopLimitNotYetSet(Point topLimit)
-        {
-            return topLimit.Y == -1;
+            for (int x = 0; x < img.Width; x++)
+            {
+                for (int y = 0; y < img.Height; y++)
+                {
+                    if (img.GetPixel(x, y).IsAlmost(Color.Black))
+                    {
+                        emptyColumn[x] = new Tuple<bool, int>(false, x);
+                        break;
+                    }
+                }
+            }
         }
     }
 }

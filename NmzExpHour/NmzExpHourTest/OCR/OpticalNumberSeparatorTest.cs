@@ -46,7 +46,6 @@ namespace NmzExpHourTest.OCR
 
             var ocr = new OpticalNumberRecognizer();
 
-
             Assert.AreEqual("9", ocr.RecognizeNumber(actual[0]));
             Assert.AreEqual("5", ocr.RecognizeNumber(actual[1]));
             Assert.AreEqual("8", ocr.RecognizeNumber(actual[2]));
@@ -56,20 +55,21 @@ namespace NmzExpHourTest.OCR
         }
 
         [Test]
-        public void CanSeperateMultipleNumbersWithAComma()
+        public void CanSeparateNumbersWithOnes()
         {
-            Bitmap rowOfNumbersWithComma = new Bitmap(Images.OCRRowComma);
+            Bitmap ones = new Bitmap(Images.Ones);
 
-            List<Bitmap> actual = new OpticalNumberSeparator().Separate(rowOfNumbersWithComma);
+            List<Bitmap> actual = new OpticalNumberSeparator().Separate(ones);
 
             var ocr = new OpticalNumberRecognizer();
 
-            Assert.AreEqual("9", ocr.RecognizeNumber(actual[0]));
-            Assert.AreEqual("5", ocr.RecognizeNumber(actual[1]));
-            Assert.AreEqual("8", ocr.RecognizeNumber(actual[2]));
-            Assert.AreEqual("0", ocr.RecognizeNumber(actual[3]));
-            Assert.AreEqual("7", ocr.RecognizeNumber(actual[4]));
-            Assert.AreEqual("5", ocr.RecognizeNumber(actual[5]));
+            Assert.AreEqual("1", ocr.RecognizeNumber(actual[0]));
+            Assert.AreEqual("0", ocr.RecognizeNumber(actual[1]));
+            Assert.AreEqual("1", ocr.RecognizeNumber(actual[2]));
+            Assert.AreEqual("6", ocr.RecognizeNumber(actual[3]));
+            Assert.AreEqual("6", ocr.RecognizeNumber(actual[4]));
+            Assert.AreEqual("9", ocr.RecognizeNumber(actual[5]));
+            Assert.AreEqual("9", ocr.RecognizeNumber(actual[6]));
         }
     }
 }

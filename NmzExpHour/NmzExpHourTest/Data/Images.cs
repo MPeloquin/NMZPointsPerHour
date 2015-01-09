@@ -11,6 +11,7 @@
         public static string TwoCommas = "Images\\TwoCommas.png";
         public static string TwoCommasNoComma = "Images\\TwoCommasNoComma.png";
         public static string Ones = "Images\\Ones.png";
+        public static string Image32Bpp = "Images\\32bppImage.png";
 
 
         public static string OCROne = "OCRImages\\1.jpg";
