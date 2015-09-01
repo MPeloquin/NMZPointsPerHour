@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ArrayOfArrayOfArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ArrayOfArrayOfString>
+    <ArrayOfString>
+      <string>g:\maxime\programs\nmzexphour\nmzexphour\nmzpointshourtest\nightmarezone\nmzsessiontest.cs</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>g:\maxime\programs\nmzexphour\nmzexphour\nmzpointshour\ui\ui.cs</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>g:\maxime\programs\nmzexphour\nmzexphour\nmzpointshour\nightmarezone\bosses.cs</string>
+    </ArrayOfString>
+    <ArrayOfString>
+      <string>g:\maxime\programs\nmzexphour\nmzexphour\nmzpointshour\nightmarezone\dream.cs</string>
+    </ArrayOfString>
+  </ArrayOfArrayOfString>
+</ArrayOfArrayOfArrayOfString>
