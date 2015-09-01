@@ -53,6 +53,14 @@ namespace NmzPointsHourTest.NightmareZone
 
             Assert.That(Math.Abs(360000 - pointsCalculator.CalculatePointsPerHour()) < 50000, "Was actually " + pointsCalculator.CalculatePointsPerHour() + ", expecting " + 360000);
         }
+
+        [Test]
+        public void ZeroPointsMeansZeroPointsPerHour()
+        {
+            pointsCalculator.Start(0);
+
+            Assert.AreEqual(0, pointsCalculator.CalculatePointsPerHour());
+        }
            
     }
 }

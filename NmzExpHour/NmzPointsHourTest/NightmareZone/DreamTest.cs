@@ -131,7 +131,7 @@ namespace NmzPointsHourTest.NightmareZone
             await Task.Delay(100);
             dream.End();
 
-            Assert.That(Math.Abs(dream.Duration - 100) < 20, "Expected 100, was actually " + dream.Duration);
+            Assert.That(Math.Abs(dream.Duration - 100) < 50, "Expected 100, was actually " + dream.Duration);
         }
 
         [Test]
@@ -168,6 +168,36 @@ namespace NmzPointsHourTest.NightmareZone
             dream.UpdatePoints();
 
             Assert.AreEqual(12302, pointsReceived);
+        }
+
+        [Test]
+        public void InvalidPointsReturnsInUpdatePoints()
+        {
+            var screenReader = Substitute.For<INMZPointsScreenReader>();
+            var calculator = Substitute.For<IPointsCalculator>();
+
+            dream.Calculator = calculator;
+            dream.NMZPointsScreenReader = screenReader;
+            screenReader.ScreenToNMZPoints().ReturnsForAnyArgs("10");
+
+            dream.Start();
+            screenReader.ScreenToNMZPoints().ReturnsForAnyArgs(x => { throw new Exception(); });
+            dream.UpdatePoints();
+
+            calculator.DidNotReceiveWithAnyArgs().UpdatePoints(123);
+        }
+
+        [Test]
+        public void InvalidPointsSetsPointsAsZeroInStart()
+        {
+            var screenReader = Substitute.For<INMZPointsScreenReader>();
+
+            dream.NMZPointsScreenReader = screenReader;
+            screenReader.ScreenToNMZPoints().ReturnsForAnyArgs(x => { throw new Exception(); });
+
+            dream.Start();
+
+            Assert.AreEqual(0, dream.Points);
         }
     }
 }

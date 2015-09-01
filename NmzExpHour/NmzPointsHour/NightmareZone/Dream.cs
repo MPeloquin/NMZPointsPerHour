@@ -36,7 +36,14 @@ namespace NmzPointsHour.NightmareZone
         public void Start()
         {
             active = true;
-            Points = Convert.ToInt32(NMZPointsScreenReader.ScreenToNMZPoints());
+            try
+            {
+                Points = Convert.ToInt32(NMZPointsScreenReader.ScreenToNMZPoints());
+            }
+            catch (Exception)
+            {
+                Points = 0;
+            }
             Calculator.Start(Points);
         }
 
