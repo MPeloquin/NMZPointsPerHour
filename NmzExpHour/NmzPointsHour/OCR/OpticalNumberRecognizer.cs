@@ -45,8 +45,10 @@ namespace NmzPointsHour.OCR
                     return Differenciate(new List<string>{"3","4"}, img);
                 case SixOrZero:
                     return Differenciate(new List<string>{"0","6"}, img);;
+                case Heigh:
+                    return "8";
             }
-            return "8";
+            return "0";
         }
 
         private string Differenciate(List<string> numbers, Bitmap img)

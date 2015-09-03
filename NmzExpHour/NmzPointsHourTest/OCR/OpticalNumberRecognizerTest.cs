@@ -142,5 +142,18 @@ namespace NmzPointsHourTest.OCR
 
             img.Dispose();
         }
+
+        [Test]
+        public void UnrecognizableNumberReturns0()
+        {
+            OpticalNumberRecognizer ocr = new OpticalNumberRecognizer();
+            Bitmap img = new Bitmap(Images.OCRNoNumber);
+
+            var actual = ocr.RecognizeNumber(img);
+
+            Assert.AreEqual("0", actual);
+
+            img.Dispose();
+        }
     }
 }
