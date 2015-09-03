@@ -16,10 +16,11 @@ namespace NmzPointsHour.NightmareZone.Database
             using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.ConnectionStrings["sqllite"].ConnectionString))
             {
                 c.Open();
-                using (SQLiteCommand command = new SQLiteCommand("INSERT INTO Dream (DurationMs, Points) VALUES (@durationms,@points);", c))
+                using (SQLiteCommand command = new SQLiteCommand("INSERT INTO Dream (DurationMs, Points, Date) VALUES (@durationms,@points,@date);", c))
                 {
                     command.Parameters.AddWithValue("@durationms", dream.Duration);
                     command.Parameters.AddWithValue("@points", dream.Points);
+                    command.Parameters.AddWithValue("@date", DateTime.Now);
 
                     command.ExecuteNonQuery();
                 }

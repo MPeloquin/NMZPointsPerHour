@@ -15,7 +15,7 @@ namespace NmzPointsHourTest.NightmareZone.Database
         {
             int pointsActual;
             int durationActual;
-
+            DateTime date;
             var dream = new Dream {Duration = 12345, Points = 12312};
 
             new DreamDb().SaveDream(dream);
@@ -30,12 +30,19 @@ namespace NmzPointsHourTest.NightmareZone.Database
                         r.Read();
                         pointsActual = Convert.ToInt32(r["Points"]);
                         durationActual = Convert.ToInt32(r["DurationMs"]);
+                        date = Convert.ToDateTime(r["Date"]);
                     }
                 }
             }
 
             Assert.AreEqual(dream.Points, pointsActual);
             Assert.AreEqual(dream.Duration, durationActual);
+            Assert.AreEqual(date.Day, DateTime.Now.Day);
+
+            Assert.AreEqual(date.Month, DateTime.Now.Month);
+            Assert.AreEqual(date.Year, DateTime.Now.Year);
+            Assert.AreEqual(date.Hour, DateTime.Now.Hour);
+            Assert.AreEqual(date.Minute, DateTime.Now.Minute);
         }
 
         [TearDown]
